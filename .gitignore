@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/generated/
+/.mvn/wrapper/maven-wrapper.properties
+/.mvn/wrapper/maven-wrapper.jar
+/.mvn/wrapper/MavenWrapperDownloader.java
