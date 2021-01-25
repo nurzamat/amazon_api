@@ -29,6 +29,7 @@ public class SPAPI {
         api = new SellersApi.Builder()
                 .awsAuthenticationCredentials(this.awsAuthCreds)
                 .lwaAuthorizationCredentials(this.lwaAuthCreds)
+                .awsAuthenticationCredentialsProvider(this.awsAuthCredsProvider)
                 .endpoint(this.config.getSPAPIEndpoint())
                 .build();
     }
@@ -69,6 +70,12 @@ public class SPAPI {
                 .clientSecret(this.config.getLwaClientSecret())
                 .refreshToken(this.config.getLwaRefreshToken())
                 .endpoint(this.config.getLwaAuthEndpoint())
+                .build();
+
+        //role
+        awsAuthCredsProvider = AWSAuthenticationCredentialsProvider.builder()
+                .roleArn(this.config.getAwsRoleArn())
+                .roleSessionName("sp-api")
                 .build();
     }
 }

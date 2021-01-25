@@ -42,6 +42,9 @@ public class Config {
     public String getAwsRegion() {
         return getProp("aws.region");
     }
+    public String getAwsRoleArn() {
+        return getProp("aws.role.arn");
+    }
     public String getLwaAuthEndpoint() {
         return getProp("lwa.authEndpoint");
     }
