@@ -6,14 +6,20 @@ import com.amazon.SellingPartnerAPIAA.AWSAuthenticationCredentials;
 import com.amazon.SellingPartnerAPIAA.AWSAuthenticationCredentialsProvider;
 import com.amazon.SellingPartnerAPIAA.LWAAuthorizationCredentials;
 import io.swagger.client.ApiException;
+import io.swagger.client.api.CatalogApi;
 import io.swagger.client.api.SellersApi;
 import io.swagger.client.model.GetMarketplaceParticipationsResponse;
+import io.swagger.client.model.Item;
+import io.swagger.client.model.ListCatalogItemsResponse;
 import io.swagger.client.model.MarketplaceParticipation;
 
 
 public class SPAPI {
     protected Config config;
     protected SellersApi api;
+
+    protected CatalogApi catalogApi;
+
     protected AWSAuthenticationCredentials awsAuthCreds;
     protected AWSAuthenticationCredentialsProvider awsAuthCredsProvider;
     protected LWAAuthorizationCredentials lwaAuthCreds;
@@ -27,6 +33,13 @@ public class SPAPI {
         // Each application role corresponds to one or more ___Api classes. In this case, we're
         // using the SellersApi class, which maps to the Selling Partner Insights role.
         api = new SellersApi.Builder()
+                .awsAuthenticationCredentials(this.awsAuthCreds)
+                .lwaAuthorizationCredentials(this.lwaAuthCreds)
+                .awsAuthenticationCredentialsProvider(this.awsAuthCredsProvider)
+                .endpoint(this.config.getSPAPIEndpoint())
+                .build();
+
+        catalogApi = new CatalogApi.Builder()
                 .awsAuthenticationCredentials(this.awsAuthCreds)
                 .lwaAuthorizationCredentials(this.lwaAuthCreds)
                 .awsAuthenticationCredentialsProvider(this.awsAuthCredsProvider)
@@ -54,6 +67,13 @@ public class SPAPI {
         }
 
         return data;
+    }
+
+    public ArrayList<Item> searchProduct(String query) throws ApiException {
+        ListCatalogItemsResponse response = catalogApi.listCatalogItems(this.config.getSPAPIMarketplaceIds().get(0), query, null, null, null, null, null, null);
+        if(response != null && response.getErrors() == null)
+            return response.getPayload().getItems();
+        return null;
     }
 
     private void _authenticate() {

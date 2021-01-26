@@ -1,6 +1,8 @@
 package com.dropmakers.amazonapi.api;
 
 import com.dropmakers.amazonapi.SPAPI;
+import io.swagger.client.ApiException;
+import io.swagger.client.model.Item;
 import io.swagger.client.model.MarketplaceParticipation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,5 +36,18 @@ public class ApiController {
             System.out.println(p.getMarketplace());
         }
         return participations;
+    }
+
+    @GetMapping("/products")
+    public List<Item> searchProduct(@RequestParam(value = "query", defaultValue = "pen") String query) {
+        SPAPI spapi = new SPAPI();
+        ArrayList<Item> result = new ArrayList<>();
+        try{
+            result = spapi.searchProduct(query);
+        }
+        catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
