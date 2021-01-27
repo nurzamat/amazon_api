@@ -14,7 +14,7 @@ public class Config {
         Properties props = new Properties();
         InputStream in = Config.class
                 .getClassLoader()
-                .getResourceAsStream("application.properties");
+                .getResourceAsStream("application-eu.properties");
         try {
             props.load(in);
             in.close();
